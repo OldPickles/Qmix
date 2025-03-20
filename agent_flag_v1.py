@@ -473,13 +473,17 @@ class Environment(tk.Tk):
         # 工人的观测值
         for worker in workers:
             worker_position = worker[1]
-            base_line = worker_position[1] - self.agent_vision_length
-            top_line = worker_position[1] + self.agent_vision_length + 1
-            observation = self.space_occupy[base_line:top_line, base_line:top_line]
+            up_line = worker_position[1] - self.agent_vision_length
+            down_line = worker_position[1] + self.agent_vision_length + 1
+            left_line = worker_position[0] - self.agent_vision_length
+            right_line = worker_position[0] + self.agent_vision_length + 1
+            observation = self.space_occupy[up_line:down_line, left_line:right_line]
             observation = observation.tolist()
             observations.append(observation)
-
-        return torch.tensor(np.array(observations), dtype=torch.float32)
+        try:
+            return torch.tensor(np.array(observations), dtype=torch.float32)
+        except ValueError:
+            pass
 
     def get_state(self, ):
         """
