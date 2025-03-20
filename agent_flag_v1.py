@@ -206,6 +206,7 @@ class Environment(tk.Tk):
                                                 anchor='nw', image=self.flag_object)
             self.tk_photo_objects.append(tk_photo)
             self.flags.append([tk_photo, flag_position])
+            self.flag_positions.append(flag_position)
             self.space_occupy[flag_position[0], flag_position[1]] = self.state_value_info['flag']
         # 添加障碍物
         for _ in range(self.n_obstacle):
@@ -216,6 +217,7 @@ class Environment(tk.Tk):
                                                 anchor='nw', image=self.obstacle_object)
             self.tk_photo_objects.append(tk_photo)
             self.obstacles.append([tk_photo, obstacle_position])
+            self.obstacle_positions.append(obstacle_position)
             self.space_occupy[obstacle_position[0], obstacle_position[1]] = self.state_value_info['obstacle']
         # 添加智能体
         for _ in range(self.n_agents):
@@ -226,6 +228,7 @@ class Environment(tk.Tk):
                                                 anchor='nw', image=self.agent_object)
             self.tk_photo_objects.append(tk_photo)
             self.agents.append([tk_photo, agent_position])
+            self.agent_positions.append(agent_position)
             self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
         # 添加铲子
@@ -237,6 +240,7 @@ class Environment(tk.Tk):
                                                 anchor='nw', image=self.shovel_object)
             self.tk_photo_objects.append(tk_photo)
             self.shovels.append([tk_photo, shovel_position])
+            self.shovel_positions.append(shovel_position)
             self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
 
     def render(self):
@@ -395,7 +399,10 @@ class Environment(tk.Tk):
                 for agent in self.agents:
                     if agent[1] == shovel_position:
                         rewards[-1] *= 2
-                        self.canvas.delete(self.flags[self.flag_positions.index(shovel_position)][0])
+                        try:
+                            self.canvas.delete(self.flags[self.flag_positions.index(shovel_position)][0])
+                        except ValueError:
+                            pass
                         self.flags.remove(self.flags[self.flag_positions.index(shovel_position)])
                         self.flag_positions.remove(shovel_position)
             # 如果铲子移动到墙上，则该回合结束
