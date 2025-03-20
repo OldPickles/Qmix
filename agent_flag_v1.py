@@ -46,6 +46,7 @@ class Environment(tk.Tk):
         self.n_flag = int(self.n_agents * 4)
         self.n_obstacle = n_agents * 10
         self.n_shovels = n_agents
+        self.n_workers = self.n_agents + self.n_shovels
 
         self.avail_actions_shape = (4,)
         self.avail_actions_dim = 4
