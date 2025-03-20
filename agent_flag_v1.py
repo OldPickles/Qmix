@@ -11,16 +11,18 @@ from PIL import ImageTk, Image
 
 class Environment(tk.Tk):
     def __init__(self, render_mode="None", n_agents=5, agent_vision_length=1, padding=2, width=20, height=20, seed=43):
-
-
-        # # 判断是否渲染
-        # if render_mode == "None":
-        #     self.root.withdraw()
-        # elif render_mode == 'human':
-        #     pass
-        # else:
-        #     raise ValueError("render_mode should be None or 'human'")
-
+        """
+        初始化环境
+        :param render_mode:
+            None: 不渲染
+            human: 人类可视化
+        :param n_agents:
+        :param agent_vision_length:
+        :param padding:
+        :param width:
+        :param height:
+        :param seed:
+        """
         super(Environment, self).__init__()
 
         self.render_mode = render_mode
@@ -43,6 +45,7 @@ class Environment(tk.Tk):
         self.agent_vision_length = min(agent_vision_length, self.padding)
         self.n_flag = int(self.n_agents * 4)
         self.n_obstacle = n_agents * 10
+        self.n_shovels = n_agents
 
         self.avail_actions_shape = (4,)
         self.avail_actions_dim = 4
@@ -58,16 +61,17 @@ class Environment(tk.Tk):
 
         self.observation_shape = (1 + self.agent_vision_length * 2, 1 + self.agent_vision_length * 2)
         self.observation_dim = self.observation_shape[0] * self.observation_shape[1]
-        self.observation_values = [-1, 0, 1, 2, 3]
+        self.observation_values = [-1, 0, 1, 2, 3, 4]
         self.state_shape = (self.WIDTH, self.HEIGHT)
         self.state_dim = self.state_shape[0] * self.state_shape[1]
-        self.state_values = [-1, 0, 1, 2, 3]
+        self.state_values = [-1, 0, 1, 2, 3, 4]
         self.state_value_info = {
             'wall': -1,
             "road": 0,
             "agent": 1,
             "flag": 2,
             "obstacle": 3,
+            "shovel": 4
         }
 
         # 走到相应位置获得得奖励
@@ -101,11 +105,13 @@ class Environment(tk.Tk):
         self.flags = []
         self.agents = []
         self.obstacles = []
+        self.shovels = []
 
         # 记录元素的位置
         self.flag_positions = []
         self.agent_positions = []
         self.obstacle_positions = []
+        self.shovel_positions = []
 
         # 将边界 padding=2 设置为障碍物
         wall_file_patch = "./images/wall.png"
@@ -118,9 +124,11 @@ class Environment(tk.Tk):
         img_flag_path = 'images/flag.png'
         img_agent_path = 'images/agent.png'
         img_obstacle_path = 'images/tree.png'
+        img_shovel_path = 'images/shovel.png'
         self.flag_object = ImageTk.PhotoImage(Image.open(img_flag_path).resize((self.pixels, self.pixels)))
         self.agent_object = ImageTk.PhotoImage(Image.open(img_agent_path).resize((self.pixels, self.pixels)))
         self.obstacle_object = ImageTk.PhotoImage(Image.open(img_obstacle_path).resize((self.pixels, self.pixels)))
+        self.shovel_object = ImageTk.PhotoImage(Image.open(img_shovel_path).resize((self.pixels, self.pixels)))
         self.build_environment()
 
         # 记录最初的占用记录
@@ -186,6 +194,7 @@ class Environment(tk.Tk):
         self.flag_positions.clear()
         self.agent_positions.clear()
         self.obstacle_positions.clear()
+        self.shovel_positions.clear()
 
         # 添加旗子
         for _ in range(self.n_flag):
@@ -218,6 +227,17 @@ class Environment(tk.Tk):
             self.agents.append([tk_photo, agent_position])
             self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
+        # 添加铲子
+        for _ in range(self.n_shovels):
+            shovel_position = self.generate_random_position()
+            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
+            tk_photo = self.canvas.create_image(self.pixels * shovel_position[0],
+                                                self.pixels * shovel_position[1],
+                                                anchor='nw', image=self.shovel_object)
+            self.tk_photo_objects.append(tk_photo)
+            self.shovels.append([tk_photo, shovel_position])
+            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
+
     def render(self):
         """
         刷新环境
@@ -231,15 +251,18 @@ class Environment(tk.Tk):
         :return:
         """
         self.space_occupy = self.space_occupy_original.copy()
-        # 删除所有智能体图像和旗子图像
+        # 删除所有智能体图像，旗子图像和铲子图像
         for agent in self.agents:
             self.canvas.delete(agent[0])
         for flag in self.flags:
             self.canvas.delete(flag[0])
+        for shovel in self.shovels:
+            self.canvas.delete(shovel[0])
         self.agents.clear()
         self.flags.clear()
+        self.shovels.clear()
 
-        # 按照self.space_occupy_original重新添加智能体和旗子
+        # 按照self.space_occupy_original重新添加智能体、旗子和铲子
         for i in range(self.space_occupy.shape[0]):
             for j in range(self.space_occupy.shape[1]):
                 if self.space_occupy[i, j] == self.state_value_info['agent']:
@@ -248,12 +271,16 @@ class Environment(tk.Tk):
                 if self.space_occupy[i, j] == self.state_value_info['flag']:
                     self.flags.append([self.canvas.create_image(self.pixels * i, self.pixels * j, anchor='nw',
                                                                 image=self.flag_object), [i, j]])
+                if self.space_occupy[i, j] == self.state_value_info['shovel']:
+                    self.shovels.append([self.canvas.create_image(self.pixels * i, self.pixels * j, anchor='nw',
+                                                                 image=self.shovel_object), [i, j]])
         self.mode_update()
 
     def step(self, actions):
         """
         执行动作
-        :param actions: shape = (n_agents, 1)
+        :param actions: shape = (n_agents+n_shovels, 1)
+            前半部分时智能体的动作，后半部分是铲子的动作
         :return:
             dones: bool
             rewards: np.array
@@ -275,10 +302,12 @@ class Environment(tk.Tk):
         left_border = self.padding
         right_border = self.WIDTH - self.padding - 1
 
+        # 此三个列表作为step返回的值，长度均等于n_agents + n_shovels
         dones = []
         rewards = []
         next_positions = []
 
+        # 智能体的行为
         for agent_index in range(len(self.agents)):
             agent_position = self.agents[agent_index][1].copy()
             action = actions[agent_index]
@@ -311,16 +340,10 @@ class Environment(tk.Tk):
             elif self.space_occupy[agent_position[0], agent_position[1]] == self.state_value_info['obstacle']:
                 dones.append(True)
                 rewards.append(self.reward_info['reach_obstacle'])
-            # 如果碰到旗子，则删除旗子
+            # 如果碰到旗子，则获得奖励
             elif self.space_occupy[agent_position[0], agent_position[1]] == self.state_value_info['flag']:
                 dones.append(False)
                 rewards.append(self.reward_info['reach_flag'])
-                # 找到该位置的旗子
-                for flag in self.flags:
-                    if flag[1] == agent_position:
-                        self.flags.remove(flag)
-                        self.canvas.delete(flag[0])
-                        self.mode_update()
             # 如果碰到墙，则该回合结束
             elif self.space_occupy[agent_position[0], agent_position[1]] == self.state_value_info['wall']:
                 dones.append(True)
@@ -336,13 +359,66 @@ class Environment(tk.Tk):
                                                                  anchor='nw', image=self.agent_object),
                                         agent_position.copy()]
             self.mode_update()
+
+        # 铲子的行为
+        for shovel_index in range(len(self.shovels)):
+            shovel_position = self.shovels[shovel_index][1].copy()
+            action = actions[len(self.agents) + shovel_index]
+            # 执行动作
+            if action == self.action_value_info['up']:
+                self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
+                shovel_position[1] -= 1
+            if action == self.action_value_info['down']:
+                self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
+                shovel_position[1] += 1
+            if action == self.action_value_info['left']:
+                self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
+                shovel_position[0] -= 1
+            if action == self.action_value_info['right']:
+                self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
+                shovel_position[0] += 1
+            # self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
+            # self.shovels[shovel_index][1] = shovel_position.copy()
+
+            # 更新铲子位置
+            self.canvas.delete(self.shovels[shovel_index][0])
+            # 如果铲子移动到障碍物上，则该回合结束
+            if self.space_occupy[shovel_position[0], shovel_position[1]] == self.state_value_info['obstacle']:
+                dones.append(True)
+                rewards.append(self.reward_info['reach_obstacle'])
+            # 如果铲子移动到旗子上，则获得奖励
+            elif self.space_occupy[shovel_position[0], shovel_position[1]] == self.state_value_info['flag']:
+                dones.append(False)
+                rewards.append(self.reward_info['reach_flag'])
+                # 如果这里也有智能体，则奖励加倍，且删除该位置的旗子
+                for agent in self.agents:
+                    if agent[1] == shovel_position:
+                        rewards[-1] *= 2
+                        self.canvas.delete(self.flags[self.flag_positions.index(shovel_position)][0])
+                        self.flags.remove(self.flags[self.flag_positions.index(shovel_position)])
+                        self.flag_positions.remove(shovel_position)
+            # 如果铲子移动到墙上，则该回合结束
+            elif self.space_occupy[shovel_position[0], shovel_position[1]] == self.state_value_info['wall']:
+                dones.append(True)
+                rewards.append(self.reward_info['reach_wall'])
+            # 到达空地
+            else:
+                dones.append(False)
+                rewards.append(self.reward_info['reach_road'])
+            # 存储当前位置，添加图像
+            next_positions.append(shovel_position.copy())
+            self.shovels[shovel_index] = [self.canvas.create_image(self.pixels * shovel_position[0],
+                                                                 self.pixels * shovel_position[1],
+                                                                 anchor='nw', image=self.shovel_object),
+                                          shovel_position.copy()]
+            self.mode_update()
+
         # 检查是否找到所有旗子，如果全都找到，则所有智能体的回合结束
         if len(self.flags) == 0:
-            dones = [True for _ in range(len(self.agents))]
-        # return dones, rewards, next_positions
-        return (torch.tensor(np.array(dones).reshape((self.n_agents,) + self.done_shape), dtype=torch.float32),
-                torch.tensor(np.array(rewards).reshape((self.n_agents,) + self.reward_shape), dtype=torch.float32),
-                torch.tensor(np.array(next_positions).reshape((self.n_agents,) + self.position_shape), dtype=torch.float32)
+            dones = [True for _ in range(len(self.agents)+len(self.shovels))]
+        return (torch.tensor(np.array(dones).reshape((self.n_agents+self.n_shovels,) + self.done_shape), dtype=torch.float32),
+                torch.tensor(np.array(rewards).reshape((self.n_agents+self.n_shovels,) + self.reward_shape), dtype=torch.float32),
+                torch.tensor(np.array(next_positions).reshape((self.n_agents+self.n_shovels,) + self.position_shape), dtype=torch.float32)
                 )
 
     def actions_sample(self, avail_actions=None):
@@ -361,11 +437,11 @@ class Environment(tk.Tk):
                     actions.append(random.choice(np.where(_ == 1)[0]))
                 else:
                     actions.append(random.randint(0, 3))
-            return np.array(actions).reshape(len(self.agents), 1)
+            return np.array(actions).reshape(len(self.agents) + len(self.shovels), 1)
         else:
-            for _ in range(len(self.agents)):
+            for _ in range(len(self.agents) + len(self.shovels)):
                 actions.append(random.randint(0, 3))
-            return np.array(actions).reshape(len(self.agents), 1)
+            return np.array(actions).reshape(len(self.agents) + len(self.shovels), 1)
 
     def get_observations(self, ):
         """
@@ -375,10 +451,13 @@ class Environment(tk.Tk):
             代表着以智能体为中心环视一周，长度为self.agent_vision_length
         """
         observations = []
-        for agent in self.agents:
-            agent_position = agent[1]
-            base_line = agent_position[1] - self.agent_vision_length
-            top_line = agent_position[1] + self.agent_vision_length + 1
+        workers = self.agents + self.shovels
+
+        # 工人的观测值
+        for worker in workers:
+            worker_position = worker[1]
+            base_line = worker_position[1] - self.agent_vision_length
+            top_line = worker_position[1] + self.agent_vision_length + 1
             observation = self.space_occupy[base_line:top_line, base_line:top_line]
             observation = observation.tolist()
             observations.append(observation)
@@ -395,14 +474,16 @@ class Environment(tk.Tk):
 
     def get_avail_actions(self, ):
         """
-        获取所有智能体的可用动作
+        获取所有智能体和铲子的可用动作
         :return:
         actions, 类型为np.array, shape=(self.n_agents, 4)
             代表智能体上下左右四个方向是否可行，若若有road则为1，否则为0
         """
         actions = []
-        for agent in self.agents:
-            position = agent[1]
+        workers = self.agents + self.shovels
+
+        for worker in workers:
+            position = worker[1]
             action = []
             for move_x, move_y in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
                 if self.space_occupy[position[0] + move_x, position[1] + move_y] == self.state_value_info['road']:
@@ -438,7 +519,7 @@ class Environment(tk.Tk):
 
 
 if __name__ == '__main__':
-    env = Environment(n_agents=4)
+    env = Environment(n_agents=4, render_mode="human")
     epoch = 0
     while True:
         epoch += 1
