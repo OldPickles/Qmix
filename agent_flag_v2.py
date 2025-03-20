@@ -17,7 +17,7 @@ import torch
 
 
 class Environment():
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=5, width=20, height=20, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=6, width=20, height=20, seed=43):
         """
         初始化环境
         :param render_mode:
@@ -422,10 +422,8 @@ class Environment():
             observation = self.space_occupy[up_line:down_line, left_line:right_line]
             observation = observation.tolist()
             observations.append(observation)
-        try:
-            return torch.tensor(np.array(observations), dtype=torch.float32)
-        except ValueError:
-            pass
+
+        return torch.tensor(np.array(observations), dtype=torch.float32)
 
     def get_state(self, ):
         """

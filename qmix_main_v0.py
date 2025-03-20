@@ -105,6 +105,7 @@ class QMIX_algo:
 
                 dones, rewards, info = self.env.step(actions)
                 next_avail_actions = self.env.get_avail_actions()
+                # 如果已经结束了，那么再求next_observations会报错，所以这里需要判断一下
                 next_observations = self.env.get_observations()
                 next_states = self.env.get_state()
                 terminate = 1 if self.env.is_done() else 0
@@ -343,8 +344,8 @@ class QMIX_algo:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_name', type=str, default='v0', help='环境名称')
-
+    parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
+    parser.add_argument('--model_version', type=str, default='v0', help='模型版本')
 
     # 不同模型版本
     model_version = {
@@ -386,14 +387,22 @@ if __name__ == '__main__':
     }
 
     # 训练模型选择
-    model_select = parser.parse_args().env_name
+    model_select = parser.parse_args().model_version
     if model_select not in model_version:
         print(f"模型版本选择错误, 请重新选择! 可选版本: {model_version.keys()}")
         exit(0)
 
     begin_time = time.time()
     # 创建环境
-    env = Environment(n_agents=4, render_mode="human", seed=model_version[model_select]["seed"])
+    if parser.parse_args().render_mode == "None":
+        from agent_flag_v1 import Environment
+    elif parser.parse_args().render_mode == "human":
+        from agent_flag_v2 import Environment
+    else:
+        print(f"渲染模式选择错误, 请重新选择! 可选模式: None, human")
+        exit(0)
+
+    env = Environment(n_agents=4,seed=model_version[model_select]["seed"])
 
     # 运行qmix_Info
     train_begin_time = time.time()
