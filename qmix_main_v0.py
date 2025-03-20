@@ -172,7 +172,6 @@ class QMIX_algo:
         工作2: 关闭环境
         :return:
         """
-        self.env.destroy()
         print(f"训练结束!")
 
         if not os.path.exists(self.model_save_path):
@@ -344,8 +343,8 @@ class QMIX_algo:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v0', help='模型版本')
+    parser.add_argument('--render_mode', type=str, default='None', help='渲染模式')
+    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
 
     # 不同模型版本
     model_version = {
@@ -395,9 +394,9 @@ if __name__ == '__main__':
     begin_time = time.time()
     # 创建环境
     if parser.parse_args().render_mode == "None":
-        from agent_flag_v1 import Environment
-    elif parser.parse_args().render_mode == "human":
         from agent_flag_v2 import Environment
+    elif parser.parse_args().render_mode == "human":
+        from agent_flag_v1 import Environment
     else:
         print(f"渲染模式选择错误, 请重新选择! 可选模式: None, human")
         exit(0)

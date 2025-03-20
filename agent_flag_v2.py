@@ -298,7 +298,6 @@ class Environment():
                 self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['road']
                 agent_position[0] += 1
             self.agents[agent_index][1] = agent_position.copy()
-            self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
             # 更新智能体位置
             # 如果碰到墙壁，则回合结束
@@ -322,8 +321,9 @@ class Environment():
             else:
                 dones.append(False)
                 rewards.append(self.reward_info['reach_road'])
-            # 存储当前位置，添加图像
+            # 存储当前位置
             next_positions.append(agent_position.copy())
+            self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
         # 铲子的行为
         for shovel_index in range(len(self.shovels)):
@@ -343,7 +343,6 @@ class Environment():
                 self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
                 shovel_position[0] += 1
             self.shovels[shovel_index][1] = shovel_position.copy()
-            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
 
             # 更新铲子位置
             # 如果铲子移动到障碍物上，则该回合结束
@@ -371,6 +370,7 @@ class Environment():
                 rewards.append(self.reward_info['reach_road'])
             # 存储当前位置，添加图像
             next_positions.append(shovel_position.copy())
+            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
 
         # 检查是否找到所有旗子，如果全都找到，则所有智能体的回合结束
         if len(self.flags) == 0:
