@@ -288,8 +288,8 @@ class QMIX_algo:
         plt.ylabel("Flag Num")
         plt.title("Test Result")
         plt.savefig(os.path.join(self.model_save_path, "test_result.png"))
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
 
     def choose_action(self, observations, avail_actions, use_epsilon=True):
         """
@@ -336,8 +336,8 @@ class QMIX_algo:
         if not os.path.exists(self.model_save_path):
             os.makedirs(self.model_save_path)
         plt.savefig(os.path.join(self.model_save_path, "evaluate_index.png"))
-        plt.show()
-        plt.close()
+        # plt.show()
+        # plt.close()
         print(f"评估指标曲线绘制成功!")
 
 
