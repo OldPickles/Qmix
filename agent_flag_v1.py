@@ -10,7 +10,7 @@ from PIL import ImageTk, Image
 
 
 class Environment(tk.Tk):
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=1, padding=2, width=20, height=20, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=15, padding=15, width=20, height=20, seed=43):
         """
         初始化环境
         :param render_mode:
@@ -40,6 +40,7 @@ class Environment(tk.Tk):
                                 height=self.HEIGHT * self.pixels,
                                 width=self.WIDTH * self.pixels)
         self.canvas.pack()
+        self.mode_update()
 
         self.n_agents = n_agents
         self.agent_vision_length = min(agent_vision_length, self.padding)
@@ -158,10 +159,18 @@ class Environment(tk.Tk):
         :return:
         """
         # 填充墙壁
+        # 上边界
         self.walls_position += list(itertools.product(range(self.padding), range(self.WIDTH)))
-        self.walls_position += list(itertools.product([self.WIDTH - 1, self.WIDTH - 2], range(self.WIDTH)))
-        self.walls_position += list(itertools.product(range(2, self.HEIGHT - self.padding),
-                                                      [0, 1, self.WIDTH - 1, self.WIDTH - 2]))
+        # 下边界
+        self.walls_position += list(itertools.product(range(self.HEIGHT-self.padding, self.HEIGHT), range(self.WIDTH)))
+        # 左边界
+        self.walls_position += list(itertools.product(range(self.padding, self.HEIGHT - self.padding),
+                                                      range(self.padding)))
+        # 右边界
+        self.walls_position += list(itertools.product(range(self.padding, self.HEIGHT - self.padding),
+                                                      range(self.WIDTH - self.padding, self.WIDTH)))
+
+        # 绘制墙壁
         for _ in self.walls_position:
             tk_photo = self.canvas.create_image(self.pixels * _[0], self.pixels * _[1], anchor='nw',
                                                 image=self.wall_object)
