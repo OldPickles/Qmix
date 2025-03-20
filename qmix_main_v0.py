@@ -120,7 +120,7 @@ class QMIX_algo:
                     train_times += 1
 
                 # 如果达到更新间隔, 更新目标网络
-                if train_times % self.target_update_interval == 0:
+                if train_times+1 % self.target_update_interval == 0:
                     self.update_target_net()
 
                 # 如果回合结束
@@ -187,10 +187,10 @@ class QMIX_algo:
         """
         # agent_net
         q_net_eval_input = torch.tensor(batch["last_observations"], requires_grad=True).float().to(self.device)
-        q_values_eval = self.eval_agent_net.forward(q_net_eval_input).reshape((-1, self.env.n_agents,) +
+        q_values_eval = self.eval_agent_net.forward(q_net_eval_input).reshape((-1, self.env.n_workers,) +
                                                                               self.env.avail_actions_shape)
         q_net_target_input = torch.tensor(batch["next_observations"], requires_grad=True).float().to(self.device)
-        q_values_target = self.target_agent_net.forward(q_net_target_input).reshape((-1, self.env.n_agents,) +
+        q_values_target = self.target_agent_net.forward(q_net_target_input).reshape((-1, self.env.n_workers,) +
                                                                                     self.env.avail_actions_shape)
         # 将q_values_eval中的q值,依据所选取的动作取出来对应q值,
         # shape: batch_size * a_agents * avail_actions_shape -> batch_size * a_agents
@@ -207,9 +207,9 @@ class QMIX_algo:
 
         # qmix_net
         mix_net_eval_input = torch.tensor(batch['last_states'], requires_grad=True).float().to(self.device)
-        mix_net_eval_input = mix_net_eval_input[:, 0::self.env.n_agents, :]  # 在一个批次里面,所有智能体的全局状态都是一样的.
+        mix_net_eval_input = mix_net_eval_input[:, 0::self.env.n_workers, :]  # 在一个批次里面,所有智能体的全局状态都是一样的.
         mix_net_target_input = torch.tensor(batch['next_states'], requires_grad=True).float().to(self.device)
-        mix_net_target_input = mix_net_target_input[:, 0::self.env.n_agents, :]  # 在一个批次里面,所有智能体的全局状态都是一样的.
+        mix_net_target_input = mix_net_target_input[:, 0::self.env.n_workers, :]  # 在一个批次里面,所有智能体的全局状态都是一样的.
 
         q_total_eval = self.eval_qmix_net.forward(q_values_eval, mix_net_eval_input)
         q_total_eval = q_total_eval.squeeze()  # shape = (batch_size,)
@@ -343,7 +343,7 @@ class QMIX_algo:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--env_name', type=str, default='v1', help='环境名称')
+    parser.add_argument('--env_name', type=str, default='v0', help='环境名称')
 
 
     # 不同模型版本

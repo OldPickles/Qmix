@@ -7,22 +7,22 @@ class DelayBuffer:
         :param env:
         """
         self.env = env
-        self.n_agents = env.n_agents
+        self.n_workers = env.n_agents + env.n_shovels
         self.buffer_capacity = buffer_capacity
         self.memory_size = 0
         self.memory_index = 0
         self.batch_size = batch_size
         # 经验池实体
         self.buffer = {
-            "last_states": np.zeros(((self.buffer_capacity, self.n_agents,) + env.state_shape)),
-            "next_states": np.zeros(((self.buffer_capacity, self.n_agents,) + env.state_shape)),
-            "last_observations": np.zeros(((self.buffer_capacity, self.n_agents,) + env.observation_shape)),
-            "next_observations": np.zeros(((self.buffer_capacity, self.n_agents,) + env.observation_shape)),
-            "actions": np.zeros(((self.buffer_capacity, self.n_agents,) + env.action_shape), dtype=np.int32),
-            "avail_actions": np.zeros(((self.buffer_capacity, self.n_agents,) + env.avail_actions_shape)),
-            "next_avail_actions": np.zeros(((self.buffer_capacity, self.n_agents,) + env.avail_actions_shape)),
-            "rewards": np.zeros((self.buffer_capacity, self.n_agents,) + self.env.reward_shape),
-            "dones": np.zeros((self.buffer_capacity, self.n_agents,) + self.env.done_shape),
+            "last_states": np.zeros(((self.buffer_capacity, self.n_workers,) + env.state_shape)),
+            "next_states": np.zeros(((self.buffer_capacity, self.n_workers,) + env.state_shape)),
+            "last_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + env.observation_shape)),
+            "next_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + env.observation_shape)),
+            "actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.action_shape), dtype=np.int32),
+            "avail_actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.avail_actions_shape)),
+            "next_avail_actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.avail_actions_shape)),
+            "rewards": np.zeros((self.buffer_capacity, self.n_workers,) + self.env.reward_shape),
+            "dones": np.zeros((self.buffer_capacity, self.n_workers,) + self.env.done_shape),
             "terminate": np.zeros((self.buffer_capacity, 1, 1))
         }
 
