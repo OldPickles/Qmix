@@ -344,7 +344,7 @@ class QMIX_algo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='None', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v0', help='模型版本')
 
     # 不同模型版本
     model_version = {

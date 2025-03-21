@@ -232,6 +232,10 @@ class Environment():
         self.flags.clear()
         self.shovels.clear()
 
+        self.agent_positions.clear()
+        self.flag_positions.clear()
+        self.shovel_positions.clear()
+
         # 按照self.space_occupy_original重新添加智能体、旗子和铲子
         agent_index = 0
         flag_index = 0
