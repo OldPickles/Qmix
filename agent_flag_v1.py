@@ -79,11 +79,11 @@ class Environment(tk.Tk):
         # 走到相应位置获得得奖励
         self.reward_info = {
             "reach_flag": 100,
-            "reach_obstacle": -100,
-            "reach_wall": -100,
+            # "reach_obstacle": -100,
+            # "reach_wall": -100,
             "reach_road": -1,
-            "reach_agent": 0,
-            "end": -250,
+            # "reach_agent": 0,
+            # "end": -250,
         }
         self.reward_shape = (1,)
         self.reward_dim = 1

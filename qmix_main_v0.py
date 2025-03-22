@@ -343,7 +343,7 @@ class QMIX_algo:
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--render_mode', type=str, default='None', help='渲染模式')
+    parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
     parser.add_argument('--model_version', type=str, default='v0', help='模型版本')
 
     # 不同模型版本
@@ -363,7 +363,7 @@ if __name__ == '__main__':
             "model_version": "v1",
         },
         "v2": {
-            "epochs": 500, "buffer_size": 50, "batch_size": 32,
+            "epochs": 1000, "buffer_size": 50, "batch_size": 32,
             "lr": 0.001, "gamma": 0.7, "epsilon": 0.9,
             "epsilon_decay_step": 500, "epsilon_min": 0.5,
             "target_update_interval": 10, "epoch_print_interval": 10, "seed": 43,
@@ -401,7 +401,8 @@ if __name__ == '__main__':
         print(f"渲染模式选择错误, 请重新选择! 可选模式: None, human")
         exit(0)
 
-    env = Environment(n_agents=4,seed=model_version[model_select]["seed"])
+    env = Environment(n_agents=4,seed=model_version[model_select]["seed"],
+                      render_mode=parser.parse_args().render_mode)
 
     # 运行qmix_Info
     train_begin_time = time.time()
