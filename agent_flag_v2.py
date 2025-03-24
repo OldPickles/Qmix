@@ -17,7 +17,7 @@ import torch
 
 
 class Environment():
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=6, width=20, height=20, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=3, padding=4, width=5, height=5, seed=43):
         """
         初始化环境
         :param render_mode:

@@ -10,7 +10,7 @@ from PIL import ImageTk, Image
 
 
 class Environment(tk.Tk):
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=5, width=20, height=20, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=5, width=5, height=5, seed=43):
         """
         初始化环境
         :param render_mode:
@@ -79,7 +79,7 @@ class Environment(tk.Tk):
         # 走到相应位置获得得奖励
         self.reward_info = {
             "reach_flag": 100,
-            # "reach_obstacle": -100,
+            "reach_obstacle": -100,
             # "reach_wall": -100,
             "reach_road": -1,
             # "reach_agent": 0,
@@ -102,6 +102,12 @@ class Environment(tk.Tk):
 
         # 环境空间占用情况，初始化为全部都是空地
         self.space_occupy = np.full((self.WIDTH, self.HEIGHT), self.state_value_info['road'], dtype=int)
+
+        # 记录可用空地
+        self.avail_positions = list(itertools.product(range(self.padding, self.padding + self.width),
+                                                      range(self.padding, self.padding + self.height)))
+        self.avail_positions_original = self.avail_positions.copy()
+
 
         # 记录元素对象
         self.flags = []
@@ -185,15 +191,11 @@ class Environment(tk.Tk):
         :return: list [x, y]
         """
         random.seed(self.seed)
-        iteration = 1
-        while iteration <= 400:
-            x = random.randint(self.padding, self.WIDTH - self.padding - 1)
-            y = random.randint(self.padding, self.HEIGHT - self.padding - 1)
-            if self.space_occupy[x, y] == self.state_value_info['road']:
-                return [x, y]
-            else:
-                iteration += 1
-        return None
+        if len(self.avail_positions) > 0:
+            position = random.sample(self.avail_positions, 1)[0]
+            return position
+        else:
+            return None
 
     def init_element(self):
         """

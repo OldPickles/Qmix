@@ -1,50 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="yu@172.17.175.178:22 password (5)" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" serverName="yu@172.17.175.178:22 password" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+    <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="yu@172.17.175.178:22 password">
         <serverdata>
           <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yu@172.17.175.178:22 password (2)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yu@172.17.175.178:22 password (3)">
-        <serverdata>
-          <mappings>
-            <mapping local="$PROJECT_DIR$" web="/" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yu@172.17.175.178:22 password (4)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/pycharm_project_830" local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yu@172.17.175.178:22 password (5)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/pycharm_project_783" local="$PROJECT_DIR$" />
-          </mappings>
-        </serverdata>
-      </paths>
-      <paths name="yu@172.17.175.178:22 password (6)">
-        <serverdata>
-          <mappings>
-            <mapping deploy="/tmp/pycharm_project_104" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/pycharm_project_460" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>
     </serverData>
-    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>
