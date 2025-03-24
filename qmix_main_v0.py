@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import torch
 import torch.nn as nn
 
-from agent_flag_v1 import Environment
+from agent_flag_v3 import Environment
 from delay_buffer_v0 import DelayBuffer
 
 from Agent_net import Q_network_RNN
@@ -393,14 +393,6 @@ if __name__ == '__main__':
 
     begin_time = time.time()
     # 创建环境
-    if parser.parse_args().render_mode == "None":
-        from agent_flag_v2 import Environment
-    elif parser.parse_args().render_mode == "human":
-        from agent_flag_v1 import Environment
-    else:
-        print(f"渲染模式选择错误, 请重新选择! 可选模式: None, human")
-        exit(0)
-
     env = Environment(n_agents=4,seed=model_version[model_select]["seed"],
                       render_mode=parser.parse_args().render_mode)
 
