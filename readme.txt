@@ -21,5 +21,7 @@ enlightenment：
 
 
 questions:
-1. 昨日未完：没有将wall的相关变量全部改变为obstacles
+1. 昨日未完：没有将wall的相关变量全部改变为obstacles ok
+2. 修改环境为服务器可运行模式。
+3. 修改环境为gym环境。
 

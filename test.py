@@ -9,7 +9,9 @@ plt.plot(x, y)
 
 plt.show()
 
-save_path = os.path.join("images", "test.png")
+save_path = os.path.join(".", "test")
+if not os.path.exists(save_path):
+    os.makedirs(save_path)
 
-plt.savefig(save_path)
+plt.savefig(os.path.join(save_path, "test.png"))
 plt.close()
