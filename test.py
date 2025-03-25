@@ -7,6 +7,8 @@ y = np.sin(x)
 
 plt.plot(x, y)
 
+plt.show()
+
 save_path = os.path.join("images", "test.png")
 
 plt.savefig(save_path)

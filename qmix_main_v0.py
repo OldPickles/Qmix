@@ -17,7 +17,7 @@ from mix_net_v0 import Qmix_network
 class QMIX_algo:
     def __init__(self, env=None, epochs=50000, lr=0.0001, gamma=0.7, epsilon=0.9,
                  epsilon_decay_step=2000, epsilon_min=0.1, buffer_size=50, batch_size=32,
-                 target_update_interval=200, model_version="v*", epoch_print_interval=1, seed=43):
+                 target_update_interval=200, model_version="v0", epoch_print_interval=1, seed=43):
         # 环境初始化
         self.env = env
         self.batch_size = batch_size
@@ -38,7 +38,7 @@ class QMIX_algo:
         self.lr = lr
         self.target_update_interval = target_update_interval
         self.gamma = gamma
-        self.max_steps = self.env.WIDTH * self.env.HEIGHT
+        self.max_steps = self.env.width + self.env.height  # 最大步数
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -103,7 +103,7 @@ class QMIX_algo:
                 avail_actions = self.env.get_avail_actions()
                 actions = self.choose_action(last_observations, avail_actions)
 
-                dones, rewards, info = self.env.step(actions)
+                dones, rewards = self.env.step(actions)
                 next_avail_actions = self.env.get_avail_actions()
                 # 如果已经结束了，那么再求next_observations会报错，所以这里需要判断一下
                 next_observations = self.env.get_observations()
@@ -143,9 +143,9 @@ class QMIX_algo:
 
                     # 额外信息
 
-                    if epoch % self.epoch_print_interval == 0:
+                    if (epoch+1) % self.epoch_print_interval == 0:
                         # 每epoch_print_interval 次 epoch打印一次训练信息
-                        print(f'Epoch: {epoch}\tSteps: {step+1}')
+                        print(f'Epoch: {epoch+1}\tSteps: {step+1}\t{dones}')
                     break
         # 输出评价指标曲线
         self.evaluate_policy(evaluate_index)
@@ -264,7 +264,7 @@ class QMIX_algo:
                 last_states = self.env.get_state()
                 avail_actions = self.env.get_avail_actions()
                 actions = self.choose_action(last_observations, avail_actions, use_epsilon=False)
-                dones, rewards, info = self.env.step(actions)
+                dones, rewards = self.env.step(actions)
                 next_avail_actions = self.env.get_avail_actions()
                 next_observations = self.env.get_observations()
                 next_states = self.env.get_state()
@@ -288,8 +288,8 @@ class QMIX_algo:
         plt.ylabel("Flag Num")
         plt.title("Test Result")
         plt.savefig(os.path.join(self.model_save_path, "test_result.png"))
-        # plt.show()
-        # plt.close()
+        plt.show()
+        plt.close()
 
     def choose_action(self, observations, avail_actions, use_epsilon=True):
         """
@@ -336,15 +336,15 @@ class QMIX_algo:
         if not os.path.exists(self.model_save_path):
             os.makedirs(self.model_save_path)
         plt.savefig(os.path.join(self.model_save_path, "evaluate_index.png"))
-        # plt.show()
-        # plt.close()
+        plt.show()
+        plt.close()
         print(f"评估指标曲线绘制成功!")
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v0', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
 
     # 不同模型版本
     model_version = {
@@ -393,7 +393,10 @@ if __name__ == '__main__':
 
     begin_time = time.time()
     # 创建环境
-    env = Environment(n_agents=4,seed=model_version[model_select]["seed"],
+    env = Environment(n_agents=1,
+                      padding=6,
+                      agent_vision_length=4,
+                      seed=model_version[model_select]["seed"],
                       render_mode=parser.parse_args().render_mode)
 
     # 运行qmix_Info

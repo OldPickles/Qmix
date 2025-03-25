@@ -402,7 +402,7 @@ class Environment(tk.Tk):
                         self.tk_photo_objects.remove(self.flags[self.flag_positions.index(shovel_position)][0])
                         self.flags.remove(self.flags[self.flag_positions.index(shovel_position)])
                         self.flag_positions.remove(shovel_position)
-                        self.space_occupy[self.state_value_index['flag'], shovel_position[0], shovel_position[1]] = self.state_value_info['road']
+                        self.space_occupy[self.state_value_index['flag'], shovel_position[0], shovel_position[1]] = 0
             # 到达空地
             else:
                 dones.append(False)
@@ -487,7 +487,7 @@ class Environment(tk.Tk):
 
         for worker in workers:
             position = worker[1]
-            action = []
+            action = [1,] # 第一个表示待在原地始终可行
             for move_x, move_y in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
                 # 上 下 左 右 如果可行则未1，否则为0
                 if self.space_occupy[self.state_value_index['obstacle'], position[0] + move_x, position[1] + move_y] == 0:
