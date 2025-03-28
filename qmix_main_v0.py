@@ -252,7 +252,7 @@ class QMIX_algo:
         """
         print("this is a test function.")
 
-        test_epochs = 10
+        test_epochs = 100
         evaluate_dict = {
             'flag_num':[],
         }
@@ -344,43 +344,43 @@ class QMIX_algo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v3', help='模型版本')
 
     # 不同模型版本
     model_version = {
         "v0": {
             "epochs": 30, "buffer_size": 50, "batch_size": 32,
             "lr": 0.001, "gamma": 0.7, "epsilon": 1,
-            "epsilon_decay_step": 30, "epsilon_min": 0.5,
+            "epsilon_decay_step": 30, "epsilon_min": 0.1,
             "target_update_interval": 10, "epoch_print_interval": 10, "seed": 43,
             "model_version": "v0",
         },
         "v1": {
             "epochs": 500, "buffer_size": 50, "batch_size": 32,
-            "lr": 0.001, "gamma": 0.7, "epsilon": 1,
-            "epsilon_decay_step": 500, "epsilon_min": 0.5,
-            "target_update_interval": 10, "epoch_print_interval": 10, "seed": 43,
+            "lr": 0.001, "gamma": 0.6, "epsilon": 1,
+            "epsilon_decay_step": 500, "epsilon_min": 0.1,
+            "target_update_interval": 10, "epoch_print_interval": 10, "seed": 46,
             "model_version": "v1",
         },
         "v2": {
-            "epochs": 1000, "buffer_size": 50, "batch_size": 32,
-            "lr": 0.001, "gamma": 0.7, "epsilon": 0.9,
-            "epsilon_decay_step": 500, "epsilon_min": 0.5,
-            "target_update_interval": 10, "epoch_print_interval": 10, "seed": 43,
+            "epochs": 1000, "buffer_size": 100, "batch_size": 64,
+            "lr": 0.001, "gamma": 0.7, "epsilon": 1,
+            "epsilon_decay_step": 1000, "epsilon_min": 0.1,
+            "target_update_interval": 200, "epoch_print_interval": 10, "seed": 48,
             "model_version": "v2",
         },
         "v3": {
-            "epochs": 50000, "buffer_size": 50, "batch_size": 32,
+            "epochs": 10000, "buffer_size": 100, "batch_size": 64,
             "lr": 0.001, "gamma": 0.7, "epsilon": 1,
-            "epsilon_decay_step": 50000, "epsilon_min": 0.01,
-            "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 43,
+            "epsilon_decay_step": 10000, "epsilon_min": 0.1,
+            "target_update_interval": 200, "epoch_print_interval": 100, "seed": 48,
             "model_version": "v3",
         },
         "v4": {
-            "epochs": 50000, "buffer_size": 100, "batch_size": 32,
+            "epochs": 50000, "buffer_size": 100, "batch_size": 64,
             "lr": 0.001, "gamma": 0.7, "epsilon": 1,
-            "epsilon_decay_step": 50000, "epsilon_min": 0.5,
-            "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 43,
+            "epsilon_decay_step": 50000, "epsilon_min": 0.1,
+            "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 48,
             "model_version": "v4",
         },
     }
@@ -393,9 +393,10 @@ if __name__ == '__main__':
 
     begin_time = time.time()
     # 创建环境
-    env = Environment(n_agents=1,
-                      padding=6,
+    env = Environment(n_agents=2,
                       agent_vision_length=4,
+                      width=6,
+                      height=6,
                       seed=model_version[model_select]["seed"],
                       render_mode=parser.parse_args().render_mode)
 

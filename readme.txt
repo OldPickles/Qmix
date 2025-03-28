@@ -21,7 +21,10 @@ enlightenment：
 
 
 questions:
-1. 昨日未完：没有将wall的相关变量全部改变为obstacles ok
-2. 修改环境为服务器可运行模式。
-3. 修改环境为gym环境。
+. 没有将wall的相关变量全部改变为obstacles ok
+. epoch 后面的输出
+. 改变到达那个地点之后，主动策略与随机探索之间取舍。
+. 修改环境为服务器可运行模式。
+. 修改环境为gym环境。
+
 

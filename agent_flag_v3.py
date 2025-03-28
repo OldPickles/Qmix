@@ -10,7 +10,7 @@ from PIL import ImageTk, Image
 
 
 class Environment(tk.Tk):
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=5, width=5, height=5, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=3, padding=5, width=5, height=5, seed=43):
         """
         初始化环境
         :param render_mode:
@@ -32,7 +32,7 @@ class Environment(tk.Tk):
         self.pixels = 20
         self.width = width  # 可活动的20x20的网格
         self.height = height
-        self.padding = padding
+        self.padding = agent_vision_length + 1
         self.WIDTH = self.width + self.padding * 2
         self.HEIGHT = self.height + self.padding * 2
 
@@ -45,7 +45,7 @@ class Environment(tk.Tk):
         self.n_agents = n_agents
         self.n_flag = n_agents
         self.n_shovels = n_agents
-        self.n_obstacle = n_agents * 2
+        self.n_obstacle = n_agents * 3
 
         self.n_objects = 4 # agents，shovels，flag，obstacle
         self.n_workers = self.n_agents + self.n_shovels
@@ -403,6 +403,7 @@ class Environment(tk.Tk):
                         self.flags.remove(self.flags[self.flag_positions.index(shovel_position)])
                         self.flag_positions.remove(shovel_position)
                         self.space_occupy[self.state_value_index['flag'], shovel_position[0], shovel_position[1]] = 0
+                        break
             # 到达空地
             else:
                 dones.append(False)
