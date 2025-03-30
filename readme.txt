@@ -22,9 +22,25 @@ enlightenment：
 
 questions:
 . 没有将wall的相关变量全部改变为obstacles ok
-. epoch 后面的输出
+. 找到棋子的回合比率很高，但是完全按照训练出的模型的参数进行运行，则效果不好。
+. 技术细节，卷积等操作。
+。
 . 改变到达那个地点之后，主动策略与随机探索之间取舍。
 . 修改环境为服务器可运行模式。
 . 修改环境为gym环境。
 
 
+自己类别。
+modification:
+    设置经验池的模式，从observation_shape -> observation_dim
+
+去掉障碍物。
+
+
+
+两worker同时到达，给100奖励。
+other -1.
+
+
+决策 5 轮次变小，尽可能快的收敛。
+旗子数量大些。10

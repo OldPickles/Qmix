@@ -43,7 +43,7 @@ class Environment(tk.Tk):
         self.mode_update()
 
         self.n_agents = n_agents
-        self.n_flag = n_agents
+        self.n_flag = n_agents * 5
         self.n_shovels = n_agents
         self.n_obstacle = n_agents * 3
 
@@ -64,8 +64,16 @@ class Environment(tk.Tk):
         }
 
         self.agent_vision_length = min(agent_vision_length, self.padding)
-        self.observation_shape = (self.n_objects, 1 + self.agent_vision_length * 2, 1 + self.agent_vision_length * 2)
-        self.observation_dim = self.observation_shape[0] * self.observation_shape[1] * self.observation_shape[2]
+
+        self.worker_one_hot_info = {
+            'agent': [1, 0],
+            'shovel': [0, 1]
+        }
+        self.worker_one_hot_dim = 2
+        self.observation_shape = (self.n_objects, 1 + self.agent_vision_length * 2,
+                                   1 + self.agent_vision_length * 2)
+        self.observation_dim = self.observation_shape[0] * self.observation_shape[1] * self.observation_shape[2] \
+                               + self.worker_one_hot_dim
         self.observation_values = [0, 1]
 
         self.state_shape = (self.n_objects, self.WIDTH, self.HEIGHT)
@@ -450,22 +458,51 @@ class Environment(tk.Tk):
         """
         获取所有智能体的观测值
         :return:
-        observations, 类型为np.array, shape=(self.n_agents, (self.agent_vision_length*2+1)**2)
+        observations, 类型为np.array, shape=(self.n_agents,
+        (self.agent_vision_length*2+1), (self.agent_vision_length*2+1))
             代表着以智能体为中心环视一周，长度为self.agent_vision_length
         """
         observations = []
-        workers = self.agents + self.shovels
-
-        # 工人的观测值
-        for worker in workers:
-            worker_position = worker[1]
-            up_line = worker_position[1] - self.agent_vision_length
-            down_line = worker_position[1] + self.agent_vision_length + 1
-            left_line = worker_position[0] - self.agent_vision_length
-            right_line = worker_position[0] + self.agent_vision_length + 1
+        for agent in self.agents:
+            agent_position = agent[1]
+            up_line = agent_position[1] - self.agent_vision_length
+            down_line = agent_position[1] + self.agent_vision_length + 1
+            left_line = agent_position[0] - self.agent_vision_length
+            right_line = agent_position[0] + self.agent_vision_length + 1
             observation = self.space_occupy[:, up_line:down_line, left_line:right_line]
-            observation = observation.tolist()
+            observation = observation.flatten()
+            observation = observation.tolist() + self.worker_one_hot_info['agent']
             observations.append(observation)
+
+        for shovel in self.shovels:
+            shovel_position = shovel[1]
+            up_line = shovel_position[1] - self.agent_vision_length
+            down_line = shovel_position[1] + self.agent_vision_length + 1
+            left_line = shovel_position[0] - self.agent_vision_length
+            right_line = shovel_position[0] + self.agent_vision_length + 1
+            observation = self.space_occupy[:, up_line:down_line, left_line:right_line]
+            observation = observation.flatten()
+            observation = observation.tolist() + self.worker_one_hot_info['shovel']
+            observations.append(observation)
+        #
+        #
+        #
+        # workers = self.agents + self.shovels
+        #
+        # # 工人的观测值
+        # for worker in workers:
+        #     worker_position = worker[1]
+        #     up_line = worker_position[1] - self.agent_vision_length
+        #     down_line = worker_position[1] + self.agent_vision_length + 1
+        #     left_line = worker_position[0] - self.agent_vision_length
+        #     right_line = worker_position[0] + self.agent_vision_length + 1
+        #     observation = self.space_occupy[:, up_line:down_line, left_line:right_line]
+        #     observation = observation.tolist()
+        #
+        #     # 添加worker类别onehot
+        #
+        #
+        #     observations.append(observation)
         return torch.tensor(np.array(observations), dtype=torch.float32)
 
     def get_state(self, ):

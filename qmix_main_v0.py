@@ -38,7 +38,8 @@ class QMIX_algo:
         self.lr = lr
         self.target_update_interval = target_update_interval
         self.gamma = gamma
-        self.max_steps = self.env.width + self.env.height  # 最大步数
+        # self.max_steps = self.env.width + self.env.height  # 最大步数
+        self.max_steps = 5
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -300,7 +301,7 @@ class QMIX_algo:
         :return:
         """
         if use_epsilon:
-            self.epsilon = max(self.epsilon - self.epsilon_decay, self.epsilon_min)
+            pass
         else:
             self.epsilon = 0.0
         if observations.device != self.device:
@@ -371,14 +372,14 @@ if __name__ == '__main__':
         },
         "v3": {
             "epochs": 10000, "buffer_size": 100, "batch_size": 64,
-            "lr": 0.001, "gamma": 0.7, "epsilon": 1,
+            "lr": 0.01, "gamma": 0.7, "epsilon": 1,
             "epsilon_decay_step": 10000, "epsilon_min": 0.1,
             "target_update_interval": 200, "epoch_print_interval": 100, "seed": 48,
             "model_version": "v3",
         },
         "v4": {
             "epochs": 50000, "buffer_size": 100, "batch_size": 64,
-            "lr": 0.001, "gamma": 0.7, "epsilon": 1,
+            "lr": 0.01, "gamma": 0.7, "epsilon": 1,
             "epsilon_decay_step": 50000, "epsilon_min": 0.1,
             "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 48,
             "model_version": "v4",
