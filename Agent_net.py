@@ -62,6 +62,7 @@ class Q_network_RNN(nn.Module):
                 return self.env.actions_sample(avail_actions)
             else:
                 Q = self.forward(inputs)
+                Q[avail_actions == 0] = -np.inf
                 return Q.argmax(dim=-1).cpu().numpy().reshape((-1, 1))
 
 

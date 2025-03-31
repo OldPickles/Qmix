@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6b3cad1f-91db-402a-a96b-3ee5babee4fd" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/Agent_net.py" beforeDir="false" afterPath="$PROJECT_DIR$/Agent_net.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/evaluate_index.png" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/evaluate_index.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/evaluate_index.txt" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/evaluate_index.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/target_agent_net.pth" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/target_agent_net.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/target_qmix_net.pth" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/target_qmix_net.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/test_result.png" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/test_result.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v2/train_info_time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/models/v2/train_info_time.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/evaluate_index.png" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/evaluate_index.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/evaluate_index.txt" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/evaluate_index.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/target_agent_net.pth" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/target_agent_net.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/target_qmix_net.pth" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/target_qmix_net.pth" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/test_result.png" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/test_result.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/v3/train_info_time.txt" beforeDir="false" afterPath="$PROJECT_DIR$/models/v3/train_info_time.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/qmix_main_v0.py" beforeDir="false" afterPath="$PROJECT_DIR$/qmix_main_v0.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;OldPickles&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/OldPickles/Qmix&quot;,
+    &quot;accountId&quot;: &quot;da19ec54-b0f0-4961-972e-0e8004be1d0f&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2uYlypSlLEjqJY8XkKufcrSOxZI" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Python.agent_flag_v1.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.agent_flag_v2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.agent_flag_v3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env0.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env1.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env2 (1).executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env2.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env3.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env4.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_env4_p100.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qmix_main_v0_p100.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;later-3.25&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/72903/OneDrive/MyCodeProject/PyCharm_Projects/code-data&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;python.debugger.dataview.coloredbydefault&quot;: &quot;false&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.deploy.options&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\72903\OneDrive\MyCodeProject\PyCharm_Projects\QMIX_v1" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="qmix_main_v0" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="QMIX_v1" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/qmix_main_v0.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.qmix_main_v0" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-PY-243.25659.43" />
+        <option value="bundled-python-sdk-181015f7ab06-4df51de95216-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-243.25659.43" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+    <option name="myConnectionType" value="DEFAULT_SDK" />
+    <option name="myConnectionId" value="" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration>C:\Users\72903\AppData\Roaming\Subversion</configuration>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6b3cad1f-91db-402a-a96b-3ee5babee4fd" name="Changes" comment="" />
+      <created>1742433647325</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1742433647325</updated>
+      <workItem from="1742433650641" duration="266000" />
+      <workItem from="1742433930108" duration="6040000" />
+      <workItem from="1742482681968" duration="765000" />
+      <workItem from="1742524804703" duration="1730000" />
+      <workItem from="1742528693438" duration="4590000" />
+      <workItem from="1742553104963" duration="68000" />
+      <workItem from="1742553239317" duration="14758000" />
+      <workItem from="1742695154603" duration="1874000" />
+      <workItem from="1742697068569" duration="1593000" />
+      <workItem from="1742698700415" duration="754000" />
+      <workItem from="1742699952853" duration="2000" />
+      <workItem from="1742699967439" duration="1461000" />
+      <workItem from="1742797302208" duration="646000" />
+      <workItem from="1742813759481" duration="97000" />
+      <workItem from="1742813870152" duration="866000" />
+      <workItem from="1742815597723" duration="3865000" />
+      <workItem from="1742819488705" duration="150000" />
+      <workItem from="1742819648035" duration="547000" />
+      <workItem from="1742820210907" duration="204000" />
+      <workItem from="1742820432796" duration="4148000" />
+      <workItem from="1742887731003" duration="11052000" />
+      <workItem from="1742917255521" duration="603000" />
+      <workItem from="1743094178536" duration="569000" />
+      <workItem from="1743127815499" duration="2299000" />
+      <workItem from="1743135552349" duration="11409000" />
+      <workItem from="1743209999546" duration="7336000" />
+      <workItem from="1743328592941" duration="4252000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/test.py</url>
+          <line>16</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Agent_net.py</url>
+          <line>61</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/QMIX_v1$test.coverage" NAME="test Coverage Results" MODIFIED="1742897114566" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env2__1_.coverage" NAME="qmix_main_v0_env2 (1) Coverage Results" MODIFIED="1742604576095" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env2.coverage" NAME="qmix_main_v0_env2 Coverage Results" MODIFIED="1742461696195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$agent_flag_v3.coverage" NAME="agent_flag_v3 Coverage Results" MODIFIED="1742891750971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$agent_flag_v1.coverage" NAME="agent_flag_v1 Coverage Results" MODIFIED="1742820773727" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env3.coverage" NAME="qmix_main_v0_env3 Coverage Results" MODIFIED="1742466522503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0.coverage" NAME="qmix_main_v0 Coverage Results" MODIFIED="1742895263141" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_p100.coverage" NAME="qmix_main_v0_p100 Coverage Results" MODIFIED="1742897957322" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$agent_flag_v2.coverage" NAME="agent_flag_v2 Coverage Results" MODIFIED="1742816250929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="C:\Users\72903\OneDrive\MyCodeProject\PyCharm_Projects\QMIX_v1" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env0.coverage" NAME="qmix_main_v0_env0 Coverage Results" MODIFIED="1742461232951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env4.coverage" NAME="qmix_main_v0_env4 Coverage Results" MODIFIED="1742466525473" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env4_p100.coverage" NAME="qmix_main_v0_env4_p100 Coverage Results" MODIFIED="1742531867794" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/QMIX_v1$qmix_main_v0_env1.coverage" NAME="qmix_main_v0_env1 Coverage Results" MODIFIED="1742435578493" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>

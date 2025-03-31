@@ -7,3 +7,9 @@ v1：添加一类智能体-铲子，作为与智能体协作的智能体，只�
  - 铲子的observation_shape与智能体保持一致
  - 铲子的action_shape与智能体保持一致
 
+
+v3: 考虑修改观测空间和全局状态的形状，
+    全局状态由[WIDTH, HEIGHT] -> [n_objects, WIDTH, HEIGHT]
+    观测空间 [agent_vision_length , agent_vision_length] -> [n_objects, agent_vision_length, agent_vision_length]
+    其中 n_agents代表着 智能体，铲子，障碍物，小旗子。
+

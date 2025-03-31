@@ -17,7 +17,7 @@ import torch
 
 
 class Environment():
-    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=5, padding=5, width=20, height=20, seed=43):
+    def __init__(self, render_mode="None", n_agents=5, agent_vision_length=3, padding=4, width=5, height=5, seed=43):
         """
         初始化环境
         :param render_mode:
@@ -232,6 +232,10 @@ class Environment():
         self.flags.clear()
         self.shovels.clear()
 
+        self.agent_positions.clear()
+        self.flag_positions.clear()
+        self.shovel_positions.clear()
+
         # 按照self.space_occupy_original重新添加智能体、旗子和铲子
         agent_index = 0
         flag_index = 0
@@ -298,7 +302,6 @@ class Environment():
                 self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['road']
                 agent_position[0] += 1
             self.agents[agent_index][1] = agent_position.copy()
-            self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
             # 更新智能体位置
             # 如果碰到墙壁，则回合结束
@@ -322,8 +325,9 @@ class Environment():
             else:
                 dones.append(False)
                 rewards.append(self.reward_info['reach_road'])
-            # 存储当前位置，添加图像
+            # 存储当前位置
             next_positions.append(agent_position.copy())
+            self.space_occupy[agent_position[0], agent_position[1]] = self.state_value_info['agent']
 
         # 铲子的行为
         for shovel_index in range(len(self.shovels)):
@@ -343,7 +347,6 @@ class Environment():
                 self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['road']
                 shovel_position[0] += 1
             self.shovels[shovel_index][1] = shovel_position.copy()
-            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
 
             # 更新铲子位置
             # 如果铲子移动到障碍物上，则该回合结束
@@ -371,6 +374,7 @@ class Environment():
                 rewards.append(self.reward_info['reach_road'])
             # 存储当前位置，添加图像
             next_positions.append(shovel_position.copy())
+            self.space_occupy[shovel_position[0], shovel_position[1]] = self.state_value_info['shovel']
 
         # 检查是否找到所有旗子，如果全都找到，则所有智能体的回合结束
         if len(self.flags) == 0:
@@ -422,10 +426,8 @@ class Environment():
             observation = self.space_occupy[up_line:down_line, left_line:right_line]
             observation = observation.tolist()
             observations.append(observation)
-        try:
-            return torch.tensor(np.array(observations), dtype=torch.float32)
-        except ValueError:
-            pass
+
+        return torch.tensor(np.array(observations), dtype=torch.float32)
 
     def get_state(self, ):
         """

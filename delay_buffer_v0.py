@@ -16,8 +16,8 @@ class DelayBuffer:
         self.buffer = {
             "last_states": np.zeros(((self.buffer_capacity, self.n_workers,) + env.state_shape)),
             "next_states": np.zeros(((self.buffer_capacity, self.n_workers,) + env.state_shape)),
-            "last_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + env.observation_shape)),
-            "next_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + env.observation_shape)),
+            "last_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + (env.observation_dim,))),
+            "next_observations": np.zeros(((self.buffer_capacity, self.n_workers,) + (env.observation_dim,))),
             "actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.action_shape), dtype=np.int32),
             "avail_actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.avail_actions_shape)),
             "next_avail_actions": np.zeros(((self.buffer_capacity, self.n_workers,) + env.avail_actions_shape)),
