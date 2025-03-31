@@ -83,6 +83,8 @@ class QMIX_algo:
         n_success = 0  # 成功找到所有旗子的回合数
         n_find_flag = 0  # 找到旗子的回合数
 
+        losses = []
+
         # 训练开始
         print(f"训练开始! model_version: {self.model_version}")
         for epoch in range(self.epochs):
@@ -97,6 +99,7 @@ class QMIX_algo:
             # epsilon 衰减
             self.epsilon = max(self.epsilon - self.epsilon_decay, self.epsilon_min)
 
+            loss = -1  # 训练过程中,loss为-1,因为还没有开始训练.
             for step in range(self.max_steps):
                 # time.sleep(0)
                 last_observations = self.env.get_observations()
@@ -116,9 +119,10 @@ class QMIX_algo:
 
                 # 添加相关评价指标
                 rewards_sum += int(rewards.sum())
+
                 if self.delay_buffer.memory_size >= self.batch_size:
                     batch = self.delay_buffer.sample()
-                    self.train(batch)
+                    loss = self.train(batch).detach().cpu().numpy()
                     train_times += 1
 
                 # 如果达到更新间隔, 更新目标网络
@@ -136,6 +140,8 @@ class QMIX_algo:
                     evaluate_index["steps_per_episode"].append(steps_per_episode)
                     evaluate_index["flag_num"].append(flag_num)
 
+                    losses.append(loss)
+
                     # 更新打印指标
                     if self.env.is_done():
                         n_success += 1  # 成功找到所有旗子的回合数
@@ -146,10 +152,17 @@ class QMIX_algo:
 
                     if (epoch+1) % self.epoch_print_interval == 0:
                         # 每epoch_print_interval 次 epoch打印一次训练信息
-                        print(f'Epoch: {epoch+1}\tSteps: {step+1}\t{dones}')
+                        print(f'Epoch: {epoch+1}\tSteps: {step+1}\n{dones.reshape((1, -1))}')
                     break
         # 输出评价指标曲线
         self.evaluate_policy(evaluate_index)
+
+        # 输出损失曲线
+        plt.plot(losses)
+        plt.xlabel("train_times")
+        plt.ylabel("loss")
+        plt.title("loss curve")
+        plt.show()
 
         # 输出打印指标
         print(f"成功找到所有旗子的回合比率:{n_success/self.epochs:.2f}")
@@ -245,6 +258,8 @@ class QMIX_algo:
         self.eval_agent_optimizer.step()
         self.eval_qmix_optimizer.step()
 
+        return loss.mean()
+
     def test(self):
         """
         测试模型: 执行10次网络确定的policy self.epsilon = 0.0
@@ -324,14 +339,13 @@ class QMIX_algo:
         :return:
         """
         fig_number = len(evaluate_index_dict)
-        plt.rcParams['font.size'] = 140
-        fig, axes = plt.subplots(1, fig_number, figsize=(100, 30))
+        fig, axes = plt.subplots(1, fig_number)
         line_styles = ['g-', 'r-', 'b-', 'y-']
         for i, (key, value) in enumerate(evaluate_index_dict.items()):
             x = list(range(len(value)))
             axes[i].plot(x, value, line_styles[i])
             axes[i].set_xlabel("Epoch")
-            axes[i].set_title(key)
+            axes[i].set_title(key, fontsize=14)
 
         # 保存图片
         if not os.path.exists(self.model_save_path):
@@ -345,12 +359,12 @@ class QMIX_algo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v3', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
 
     # 不同模型版本
     model_version = {
         "v0": {
-            "epochs": 30, "buffer_size": 50, "batch_size": 32,
+            "epochs": 30, "buffer_size": 10, "batch_size": 5,
             "lr": 0.001, "gamma": 0.7, "epsilon": 1,
             "epsilon_decay_step": 30, "epsilon_min": 0.1,
             "target_update_interval": 10, "epoch_print_interval": 10, "seed": 43,
@@ -371,18 +385,25 @@ if __name__ == '__main__':
             "model_version": "v2",
         },
         "v3": {
-            "epochs": 10000, "buffer_size": 100, "batch_size": 64,
-            "lr": 0.01, "gamma": 0.7, "epsilon": 1,
-            "epsilon_decay_step": 10000, "epsilon_min": 0.1,
-            "target_update_interval": 200, "epoch_print_interval": 100, "seed": 48,
+            "epochs": 5000, "buffer_size": 100, "batch_size": 64,
+            "lr": 0.001, "gamma": 0.7, "epsilon": 1,
+            "epsilon_decay_step": 1000, "epsilon_min": 0.1,
+            "target_update_interval": 200, "epoch_print_interval": 10, "seed": 12,
             "model_version": "v3",
         },
         "v4": {
-            "epochs": 50000, "buffer_size": 100, "batch_size": 64,
+            "epochs": 10000, "buffer_size": 100, "batch_size": 64,
+            "lr": 0.01, "gamma": 0.7, "epsilon": 1,
+            "epsilon_decay_step": 10000, "epsilon_min": 0.1,
+            "target_update_interval": 200, "epoch_print_interval": 100, "seed": 49,
+            "model_version": "v4",
+        },
+        "v5": {
+            "epochs": 100000, "buffer_size": 100, "batch_size": 64,
             "lr": 0.01, "gamma": 0.7, "epsilon": 1,
             "epsilon_decay_step": 50000, "epsilon_min": 0.1,
-            "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 48,
-            "model_version": "v4",
+            "target_update_interval": 200, "epoch_print_interval": 1000, "seed": 1,
+            "model_version": "v5",
         },
     }
 
