@@ -39,7 +39,7 @@ class QMIX_algo:
         self.target_update_interval = target_update_interval
         self.gamma = gamma
         # self.max_steps = self.env.width + self.env.height  # 最大步数
-        self.max_steps = 5
+        self.max_steps = 20
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -162,7 +162,9 @@ class QMIX_algo:
         plt.xlabel("train_times")
         plt.ylabel("loss")
         plt.title("loss curve")
+        plt.savefig(os.path.join(self.model_save_path, "loss_curve.png"))
         plt.show()
+        plt.close()
 
         # 输出打印指标
         print(f"成功找到所有旗子的回合比率:{n_success/self.epochs:.2f}")
@@ -359,7 +361,7 @@ class QMIX_algo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v2', help='模型版本')
 
     # 不同模型版本
     model_version = {
