@@ -17,7 +17,7 @@ from mix_net_v0 import Qmix_network
 class QMIX_algo:
     def __init__(self, env=None, epochs=50000, lr=0.0001, gamma=0.7, epsilon=0.9,
                  epsilon_decay_step=2000, epsilon_min=0.1, buffer_size=50, batch_size=32,
-                 target_update_interval=200, model_version="v0", epoch_print_interval=1, seed=43):
+                 target_update_interval=200, model_version="v0", epoch_print_interval=1, seed=43, model_save_path="None"):
         # 环境初始化
         self.env = env
         self.batch_size = batch_size
@@ -28,7 +28,12 @@ class QMIX_algo:
         self.model_version = model_version
 
         # 训练参数
-        self.model_save_path = os.path.join('models', self.model_version)
+        if model_save_path == "None":
+            self.model_save_path = os.path.join('models', self.model_version)
+        else:
+            self.model_save_path = model_save_path
+        if not os.path.exists(self.model_save_path):
+            os.makedirs(self.model_save_path)
 
         # 模型超参
         self.epsilon = epsilon
@@ -39,7 +44,7 @@ class QMIX_algo:
         self.target_update_interval = target_update_interval
         self.gamma = gamma
         # self.max_steps = self.env.width + self.env.height  # 最大步数
-        self.max_steps = 5
+        self.max_steps = 20
 
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -162,7 +167,9 @@ class QMIX_algo:
         plt.xlabel("train_times")
         plt.ylabel("loss")
         plt.title("loss curve")
+        plt.savefig(os.path.join(self.model_save_path, "loss_curve.png"))
         plt.show()
+        plt.close()
 
         # 输出打印指标
         print(f"成功找到所有旗子的回合比率:{n_success/self.epochs:.2f}")
@@ -267,45 +274,38 @@ class QMIX_algo:
         :return:
         """
         print("this is a test function.")
+        self.env.reset()
+        flag_nums = []
+        step = 0
+        while True:
+            last_observations = self.env.get_observations()
+            last_states = self.env.get_state()
+            avail_actions = self.env.get_avail_actions()
+            actions = self.choose_action(last_observations, avail_actions, use_epsilon=False)
+            dones, rewards = self.env.step(actions)
+            next_avail_actions = self.env.get_avail_actions()
+            next_observations = self.env.get_observations()
+            next_states = self.env.get_state()
+            terminate = 1 if self.env.is_done() else 0
+            self.delay_buffer.store_transition(last_states, next_states, last_observations, next_observations,
+                                               actions, avail_actions, next_avail_actions, rewards, dones,
+                                               terminate)
+            # 旗子数量
+            flag_num = self.env.n_flag - len(self.env.flags)
+            flag_nums.append(flag_num)
+            step += 1
+            if step == self.max_steps or self.env.is_done():
+                break
 
-        test_epochs = 100
-        evaluate_dict = {
-            'flag_num':[],
-        }
-        for _ in range(test_epochs):
-            self.env.reset()
-            flag_num = 0
-            for step in range(self.max_steps):
-                last_observations = self.env.get_observations()
-                last_states = self.env.get_state()
-                avail_actions = self.env.get_avail_actions()
-                actions = self.choose_action(last_observations, avail_actions, use_epsilon=False)
-                dones, rewards = self.env.step(actions)
-                next_avail_actions = self.env.get_avail_actions()
-                next_observations = self.env.get_observations()
-                next_states = self.env.get_state()
-                terminate = 1 if self.env.is_done() else 0
-                self.delay_buffer.store_transition(last_states, next_states, last_observations, next_observations,
-                                                   actions, avail_actions, next_avail_actions, rewards, dones,
-                                                   terminate)
-
-                # 旗子数量
-                flag_num += self.env.n_flag - len(self.env.flags)
-
-
-                if any(dones) or step == self.max_steps-1:
-                    evaluate_dict['flag_num'].append(flag_num)
-                    break
-        plt.rcParams['font.size'] = 10
-        plt.figure(figsize=(10, 8))
-
-        plt.plot(list(range(len(evaluate_dict['flag_num']))), evaluate_dict['flag_num'])
-        plt.xlabel("Epoch")
-        plt.ylabel("Flag Num")
+        plt.plot(list(range(step)), flag_nums)
+        plt.xlabel('step')
+        plt.ylabel('flag_num')
         plt.title("Test Result")
-        plt.savefig(os.path.join(self.model_save_path, "test_result.png"))
+        plt.savefig(self.model_save_path + "/test_result.png")
         plt.show()
         plt.close()
+        print(f"test end!")
+
 
     def choose_action(self, observations, avail_actions, use_epsilon=True):
         """
@@ -359,7 +359,8 @@ class QMIX_algo:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--render_mode', type=str, default='human', help='渲染模式')
-    parser.add_argument('--model_version', type=str, default='v4', help='模型版本')
+    parser.add_argument('--model_version', type=str, default='v2', help='模型版本')
+    parser.add_argument('--model_save_path', type=str, default='None', help='模型保存路径')
 
     # 不同模型版本
     model_version = {
@@ -435,7 +436,9 @@ if __name__ == '__main__':
                           target_update_interval=model_version[model_select]["target_update_interval"],
                           model_version=model_version[model_select]["model_version"],
                           epoch_print_interval=model_version[model_select]["epoch_print_interval"],
-                          seed=model_version[model_select]["seed"],)
+                          seed=model_version[model_select]["seed"],
+                          model_save_path=parser.parse_args().model_save_path,
+                          )
     qmix_algo.run()
 
     # 运行时间
